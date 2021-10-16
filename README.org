@@ -1,0 +1,3 @@
+#+TITLE: Hangman game
+
+Simple implementation of Hangman game in Haskell
