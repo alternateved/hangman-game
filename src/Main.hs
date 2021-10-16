@@ -14,5 +14,11 @@ allWords = do
   dict <- readFile "data/dict.txt"
   return (lines dict)
 
+minWordLength :: Int
+minWordLength = 5
+
+maxWordLength :: Int
+maxWordLength = 9
+
 main :: IO ()
 main = putStrLn "Hello, Haskell!"
