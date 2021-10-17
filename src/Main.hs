@@ -98,15 +98,25 @@ handleGuess puzzle guess = do
       putStrLn "This character wasn't in the word, try again."
       return (fillInCharacter puzzle guess)
 
+-- Calculate number of wrong guesses
+countWrongs :: Puzzle -> Int
+countWrongs (Puzzle wordToGuess _ guessed) = length guessed - rightChars
+  where
+    rightChars = length $ intersect wordToGuess guessed
+
+-- Terminate game if the number of wrong guesses is over the limit
 gameOver :: Puzzle -> IO ()
-gameOver (Puzzle wordToGuess _ guessed) =
-  if (length guessed) > 7
+gameOver puzzle =
+  if countWrongs puzzle > limit
     then do
       putStrLn "You lose!"
-      putStrLn $ "The word was: " ++ wordToGuess
+      putStrLn $ "The word was: " ++ puzzleWord puzzle
       exitSuccess
     else return ()
+  where
+    limit = 5
 
+-- Win the game if the word is guessed
 gameWin :: Puzzle -> IO ()
 gameWin (Puzzle _ filledInSoFar _) =
   if all isJust filledInSoFar
