@@ -44,13 +44,15 @@ randomWord' = gameWords >>= randomWord
 
 data Puzzle = Puzzle String [Maybe Char] [Char]
 
+puzzleWord :: Puzzle -> String
+puzzleWord (Puzzle s _ _) = s
+
 -- Show Puzzle's word to guess (String), characters filled in ([Maybe Char]), letters guessed ([Char])
 instance Show Puzzle where
   show (Puzzle _ discovered guessed) =
-    intersperse ' ' $
-      fmap renderPuzzleChar discovered
-        ++ " Guessed so far: "
-        ++ guessed
+    fmap renderPuzzleChar discovered
+      ++ " Guessed so far: "
+      ++ intersperse ' ' guessed
 
 -- Create a list of Nothing from Puzzle
 freshPuzzle :: String -> Puzzle
