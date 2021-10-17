@@ -2,18 +2,18 @@ module Main where
 
 import Control.Monad (forever)
 import Data.Char (toLower)
-import Data.List (intersperse)
+import Data.List (intersect, intersperse)
 import Data.Maybe (isJust)
 import System.Exit (exitSuccess)
 import System.Random (randomRIO)
 
-type WordList = [String]
+newtype WordList = WordList [String] deriving (Eq, Show)
 
 -- Generate a list of words from file
 allWords :: IO WordList
 allWords = do
   dict <- readFile "data/dict.txt"
-  return (lines dict)
+  return $ WordList (lines dict)
 
 -- Set words length limit
 minWordLength :: Int
@@ -24,7 +24,9 @@ maxWordLength = 9
 
 -- Filter allWords accordingly to provided word's length constraint
 gameWords :: IO WordList
-gameWords = do filter gameLength <$> allWords
+gameWords = do
+  (WordList aw) <- allWords
+  return $ WordList (filter gameLength aw)
   where
     gameLength w =
       let l = length (w :: String)
@@ -32,7 +34,7 @@ gameWords = do filter gameLength <$> allWords
 
 -- Generate random number and return a word from WordList with index of random number
 randomWord :: WordList -> IO String
-randomWord wl = do
+randomWord (WordList wl) = do
   randomIndex <- randomRIO (0, length wl - 1)
   return $ wl !! randomIndex
 
