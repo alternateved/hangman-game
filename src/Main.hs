@@ -125,11 +125,12 @@ gameWin (Puzzle _ filledInSoFar _) =
       exitSuccess
     else return ()
 
+-- Run the game forever! (until the word is guessed or the limit of wrong guesses breached)
 runGame :: Puzzle -> IO ()
 runGame puzzle = forever $ do
   gameOver puzzle
   gameWin puzzle
-  putStrLn $ "Current puzzle is: " ++ show puzzle
+  putStrLn $ "\nCurrent puzzle is: " ++ show puzzle
   putStr "Guess a letter: "
   guess <- getLine
   case guess of
